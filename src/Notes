@@ -1,0 +1,2 @@
+-- remove the authState check and get uid everytime method using redux
+-- remove the parent child state passing methods.
