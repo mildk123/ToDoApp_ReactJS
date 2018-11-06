@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import TodoInput from '../../Helper/TodoInput'
 import GetTodos from '../../Helper/GetTodos'
 
-import Appbar from '../../Helper/AppBar'
+import Appbar from '../../Helper/AppBar';
+import Drawer from '../../Helper/Drawer';
 import swal from 'sweetalert'
+
+import { connect } from 'react-redux';
 
 import firebase from '../../Config/firebase'
 const database = firebase.database().ref()
@@ -29,13 +32,13 @@ class Dashboard extends Component {
 
     addTask = () => {
         if (this.state.TaskName != null) {
-
             firebase.auth().onAuthStateChanged((user) => {
                 if (user) {
-                    database.child('tasks').child(user.uid).push({
+                    database.child('tasks').child(user.uid  ).push({
                         Heading: this.state.TaskName,
                         Description: this.state.Description,
                     })
+
                 }
             })
         } else {
@@ -54,6 +57,7 @@ class Dashboard extends Component {
         return (
             <div>
                 <Appbar color="secondary">Dashboard</Appbar>
+                <Drawer />
                 <div>
                     <TodoInput
                         handleChange={this.handleChange}
@@ -63,9 +67,16 @@ class Dashboard extends Component {
                 <div>
                     <GetTodos />
                 </div>
-            </div>
+            </div >
         );
     }
 }
 
-export default Dashboard;
+const mapStateToProps = (state) => {
+    return {
+        state
+    }
+}
+
+
+export default connect(mapStateToProps)(Dashboard);

@@ -1,13 +1,18 @@
 import React, { Component, Fragment } from 'react';
 
+import { updateUser, removeUser } from '../../Redux/actions/authActions'
+import { connect } from 'react-redux';
+
 import Button from '../../Helper/Button'
 import swal from 'sweetalert'
+
 
 import firebase from '../../Config/firebase'
 const database = firebase.database().ref()
 const provider = new firebase.auth.FacebookAuthProvider();
 
 class Authentication extends Component {
+
     Login = () => {
         console.log(`login`);
     }
@@ -15,7 +20,16 @@ class Authentication extends Component {
     fbLogin = () => {
         firebase.auth().signInWithPopup(provider)
             .then((result) => {
+
                 const userDetails = result.user.providerData[0];
+
+                this.props.onUpdateUser({
+                    Name: userDetails.displayName,
+                    email: userDetails.email,
+                    photo: userDetails.photoURL,
+                    Uid : result.user.uid
+                })
+
                 database.child('users').child(result.user.uid).set({
                     Name: userDetails.displayName,
                     email: userDetails.email,
@@ -33,23 +47,23 @@ class Authentication extends Component {
     render() {
         return (
             <Fragment>
-                <h1>ToDo List</h1>
+                <h1 className="display-4" >ToDo List</h1>
 
                 <div>
                     <Button 
                     variant='contained' 
                     btnColor='secondary' 
-                    onClick={this.Login}
+                    click={this.Login}
                     >Login
                     </Button>
 
                     <Button 
                     variant='contained' 
                     btnColor='primary' 
-                    onClick={this.fbLogin}
+                    click={this.fbLogin}
                     >Use Facebook
                     </Button>
-
+                    
                 </div>
             </Fragment>
 
@@ -57,4 +71,15 @@ class Authentication extends Component {
     }
 }
 
-export default Authentication;
+const mapStateToProps = (state, props) => {
+    return {
+        state
+    }
+}
+
+const mapDispatchToProps = {
+    onUpdateUser: updateUser,
+    onRemoveUser: removeUser
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Authentication);
