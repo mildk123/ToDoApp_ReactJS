@@ -35,7 +35,7 @@ class ButtonAppBar extends React.Component {
 
 
 const mapStateToProps = (state, props) => {
-  return state, props
+  return state
 }
 
 const mapDispatchToProps = {
