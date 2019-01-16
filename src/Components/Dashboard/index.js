@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TodoInput from '../../Helper/TodoInput'
 import GetTodos from '../../Helper/GetTodos'
 
+import Appbar from '../../Helper/AppBar';
 import Drawer from '../../Helper/Drawer';
 import swal from 'sweetalert'
 
@@ -55,7 +56,7 @@ class Dashboard extends Component {
     render() {
         return (
             <div>
-                <Drawer {...this.props} />
+                <Drawer />
                 <main>
                     <TodoInput
                         handleChange={this.handleChange}

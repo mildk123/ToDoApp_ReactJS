@@ -98,10 +98,10 @@ class MiniDrawer extends React.Component {
     };
 
     signOut = () => {
-        firebase.auth().signOut()
-        this.props.history.push('/Authentication')
+        firebase.auth().signOut()      
+        
     };
-
+    
     render() {
         const { classes, theme } = this.props;
 
@@ -153,10 +153,7 @@ class MiniDrawer extends React.Component {
                     <Divider />
                     <List>
 
-                        <ListItem button key='Dashboard'>
-                            <ListItemIcon><MailIcon /></ListItemIcon>
-                            <ListItemText primary={'Dashboard'} />
-                        </ListItem>
+                   
                         <ListItem button onClick={() => this.signOut()} key='Sign Out'>
                             <ListItemIcon><InboxIcon /></ListItemIcon>
                             <ListItemText primary={'Sign Out'} />
@@ -172,10 +169,5 @@ class MiniDrawer extends React.Component {
         );
     }
 }
-
-MiniDrawer.propTypes = {
-    classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles, { withTheme: true })(MiniDrawer);
