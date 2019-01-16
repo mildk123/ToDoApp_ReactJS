@@ -54,7 +54,7 @@ class GetTodos extends Component {
         return (
             <Fragment >
                 {todosList.map((item, index) => {
-                    return <Paper key={item} style={{ margin: 10, padding: 6, float: 'left', width: 340 }}>
+                    return <Paper key={item} style={{ marginLeft: '8%', marginTop: '1%', padding: 6, float: 'left', width: 340 }}>
                         <h3 style={{ float: 'left' }}>{item.Heading}</h3>
                         <button
                             onClick={(key, arrayKey) => this.remove(item.key, index)}
@@ -64,7 +64,7 @@ class GetTodos extends Component {
                                 border: 'none',
                                 color: 'white',
                                 background: '#ff6666',
-                                width: 30,
+                                width: 55,
                                 borderRadius: '15px'
                             }}>X</button>
                         <p style={{ float: 'left', clear: 'both' }}>{item.Description}</p>

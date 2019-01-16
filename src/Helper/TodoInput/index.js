@@ -15,7 +15,7 @@ class todoInput extends React.Component {
     render() {
         return (
             <div>
-                <Paper style={{ margin: 10, padding: 6 }} elevation={1}>
+                <Paper style={{ marginLeft: '8%', marginRight: '2%', padding: 10 }} elevation={2}>
                     <TextField
                         label="Task Name"
                         onChange={(event) => this.props.handleChange('TaskName', event.target.value)}
@@ -27,7 +27,7 @@ class todoInput extends React.Component {
                         multiline
                         rowsMax="4"
                         onChange={(event) => this.props.handleChange('Description', event.target.value)}
-                        margin="normal"
+                        margin='dense'
                         fullWidth
                     />
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import TodoInput from '../../Helper/TodoInput'
 import GetTodos from '../../Helper/GetTodos'
 
-import Appbar from '../../Helper/AppBar';
 import Drawer from '../../Helper/Drawer';
 import swal from 'sweetalert'
 
@@ -56,17 +55,14 @@ class Dashboard extends Component {
     render() {
         return (
             <div>
-                <Appbar color="secondary">Dashboard</Appbar>
-                <Drawer />
-                <div>
+                <Drawer {...this.props} />
+                <main>
                     <TodoInput
                         handleChange={this.handleChange}
                         addTask={this.addTask}
                     />
-                </div>
-                <div>
                     <GetTodos />
-                </div>
+                </main>
             </div >
         );
     }
