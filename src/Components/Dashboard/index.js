@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import TodoInput from '../../Helper/TodoInput'
 import GetTodos from '../../Helper/GetTodos'
 
-import Appbar from '../../Helper/AppBar';
 import Drawer from '../../Helper/Drawer';
 import swal from 'sweetalert'
 
@@ -34,7 +33,7 @@ class Dashboard extends Component {
         if (this.state.TaskName != null) {
             firebase.auth().onAuthStateChanged((user) => {
                 if (user) {
-                    database.child('tasks').child(user.uid  ).push({
+                    database.child('tasks').child(user.uid).push({
                         Heading: this.state.TaskName,
                         Description: this.state.Description,
                     })
@@ -57,12 +56,17 @@ class Dashboard extends Component {
         return (
             <div>
                 <Drawer />
-                <main>
-                    <TodoInput
-                        handleChange={this.handleChange}
-                        addTask={this.addTask}
-                    />
-                    <GetTodos />
+                <main style={{width: '100%', padding: 10}}>
+                    <div style={{width: '85%',marginLeft: '10%', marginRight: '10%',}}>
+
+                        <TodoInput
+                            handleChange={this.handleChange}
+                            addTask={this.addTask}
+                        />
+                    </div>
+                    <div style={{width: '85%',marginLeft:'10%',marginTop: '3%',}}>
+                        <GetTodos />
+                    </div>
                 </main>
             </div >
         );

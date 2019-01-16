@@ -8,11 +8,13 @@ class GetTodos extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            todosList: []
+            todosList: [],
+            isLoaded: false,
+            isLoading: true
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 database.child('tasks').child(user.uid).on('child_added', (callback) => {
@@ -23,7 +25,9 @@ class GetTodos extends Component {
                         Description: todos.Description
                     }]
                     this.setState({
-                        todosList: [...this.state.todosList, ...todo]
+                        todosList: [...this.state.todosList, ...todo],
+                        isLoaded: true,
+                        isLoading: false
                     })
                 })
             } else {
@@ -50,28 +54,33 @@ class GetTodos extends Component {
     }
 
     render() {
-        const { todosList } = this.state;
+        const { todosList, isLoaded } = this.state;
+        if (isLoaded) {
+            return (
+                <Fragment >
+                    {todosList.map((item, index) => {
+                        return <Paper key={item} style={{ padding: 10, float: 'left', width: 340, height: 120, marginRight: 8 }}>
+                            <h3 style={{ float: 'left' }}>{item.Heading}</h3>
+                            <button
+                                onClick={(key, arrayKey) => this.remove(item.key, index)}
+                                style={{
+                                    float: 'right',
+                                    marginRight: 5,
+                                    border: 'none',
+                                    color: 'white',
+                                    background: '#ff6666',
+                                    width: 55,
+                                    borderRadius: '15px'
+                                }}>X</button>
+                            <p style={{ float: 'left', clear: 'both' }}>{item.Description}</p>
+                        </Paper>
+                    })}
+                </Fragment>
+            )
+        }
         return (
-            <Fragment >
-                {todosList.map((item, index) => {
-                    return <Paper key={item} style={{ marginLeft: '8%', marginTop: '1%', padding: 6, float: 'left', width: 340 }}>
-                        <h3 style={{ float: 'left' }}>{item.Heading}</h3>
-                        <button
-                            onClick={(key, arrayKey) => this.remove(item.key, index)}
-                            style={{
-                                float: 'right',
-                                marginRight: 5,
-                                border: 'none',
-                                color: 'white',
-                                background: '#ff6666',
-                                width: 55,
-                                borderRadius: '15px'
-                            }}>X</button>
-                        <p style={{ float: 'left', clear: 'both' }}>{item.Description}</p>
-                    </Paper>
-                })}
-            </Fragment>
-        );
+            <h3 style={{ flex: 1, alignContent: 'center', alignItems: ' center', justifyContent: 'center' }}>Wait...</h3>
+        )
     }
 }
 

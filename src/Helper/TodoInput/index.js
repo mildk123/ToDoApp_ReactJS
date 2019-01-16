@@ -15,7 +15,7 @@ class todoInput extends React.Component {
     render() {
         return (
             <div>
-                <Paper style={{ marginLeft: '8%', marginRight: '2%', padding: 10 }} elevation={2}>
+                <Paper style={{padding: 15 }} elevation={2}>
                     <TextField
                         label="Task Name"
                         onChange={(event) => this.props.handleChange('TaskName', event.target.value)}
