@@ -14,27 +14,61 @@ class GetTodos extends Component {
         };
     }
 
-    componentWillMount() {
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                database.child('tasks').child(user.uid).on('child_added', (callback) => {
-                    let todos = callback.val()
-                    let todo = [{
-                        key: callback.key,
-                        Heading: todos.Heading,
-                        Description: todos.Description
-                    }]
-                    this.setState({
-                        todosList: [...this.state.todosList, ...todo],
-                        isLoaded: true,
-                        isLoading: false
-                    })
+    // componentDidMount() {
+    //     // firebase.auth().onAuthStateChanged((user) => {
+    //     //     if (user) {
+    //     //         database.child('tasks').child(user.uid).on('child_added', (callback) => {
+    //     //             let todos = callback.val()
+    //     //             let todo = [{
+    //     //                 key: callback.key,
+    //     //                 Heading: todos.Heading,
+    //     //                 Description: todos.Description
+    //     //             }]
+    //     //             this.setState({
+    //     //                 todosList: [...this.state.todosList, ...todo],
+    //     //                 isLoaded: true,
+    //     //                 isLoading: false
+    //     //             })
+    //     //         })
+    //     //     } else {
+    //     //         // No user is signed in.
+    //     //         this.props.history.push('./Authentication')
+    //     //     }
+    //     // });
+    //     let headers = new Headers();
+
+    //     headers.append('Content-Type', 'application/json');
+    //     headers.append('Accept', 'application/json');
+
+    //     headers.append('Access-Control-Allow-Origin', 'http://localhost:3001');
+    //     headers.append('Access-Control-Allow-Credentials', 'true');
+
+
+
+    //     fetch('http://localhost:3001/todos/getAll',
+    //         {
+    //             //mode: 'no-cors',
+    //             method: 'GET',
+    //             headers: headers
+    //         }
+    //     )
+    //         .then(res => res.json())
+    //         .then(data => console.log(data))
+    //         .catch(error => console.log(error.message))
+    // }
+
+    componentDidMount() {
+        fetch('/todos/getAll')
+            .then(res => res.json())
+            .then(todos =>
+                this.setState({
+                    todosList: todos,
+                    isLoaded: true,
+                    isLoading: false
                 })
-            } else {
-                // No user is signed in.
-                this.props.history.push('./Authentication')
-            }
-        });
+            )
+            .catch(error => console.log(error.message)
+            )
     }
 
     remove = (key, arrayKey) => {
@@ -59,8 +93,8 @@ class GetTodos extends Component {
             return (
                 <Fragment >
                     {todosList.map((item, index) => {
-                        return <Paper key={item} style={{ padding: 10, float: 'left', width: 340, height: 120, marginRight: 8 }}>
-                            <h3 style={{ float: 'left' }}>{item.Heading}</h3>
+                        return <Paper key={item.title} style={{ padding: 10, float: 'left', width: 340, height: 120, marginRight: 8 }}>
+                            <h3 style={{ float: 'left' }}>{item.title}</h3>
                             <button
                                 onClick={(key, arrayKey) => this.remove(item.key, index)}
                                 style={{
@@ -72,7 +106,7 @@ class GetTodos extends Component {
                                     width: 55,
                                     borderRadius: '15px'
                                 }}>X</button>
-                            <p style={{ float: 'left', clear: 'both' }}>{item.Description}</p>
+                            <p style={{ float: 'left', clear: 'both' }}>{item.desc}</p>
                         </Paper>
                     })}
                 </Fragment>
