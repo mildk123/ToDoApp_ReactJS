@@ -31,15 +31,17 @@ class Dashboard extends Component {
 
     addTask = () => {
         if (this.state.TaskName != null) {
-            firebase.auth().onAuthStateChanged((user) => {
-                if (user) {
-                    database.child('tasks').child(user.uid).push({
-                        Heading: this.state.TaskName,
-                        Description: this.state.Description,
-                    })
-
-                }
+            let TaskName = this.state.TaskName;
+            let desc = this.state.Description;
+            fetch('/todos/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: TaskName, desc: desc })
             })
+                .catch(error => console.log(error.message)
+                )
         } else {
             swal('Please fill the above boxes.')
         }
@@ -56,15 +58,15 @@ class Dashboard extends Component {
         return (
             <div>
                 <Drawer />
-                <main style={{width: '100%', padding: 10}}>
-                    <div style={{width: '85%',marginLeft: '10%', marginRight: '10%',}}>
+                <main style={{ width: '100%', padding: 10 }}>
+                    <div style={{ width: '85%', marginLeft: '10%', marginRight: '10%', }}>
 
                         <TodoInput
                             handleChange={this.handleChange}
                             addTask={this.addTask}
                         />
                     </div>
-                    <div style={{width: '85%',marginLeft:'10%',marginTop: '3%',}}>
+                    <div style={{ width: '85%', marginLeft: '10%', marginTop: '3%', }}>
                         <GetTodos />
                     </div>
                 </main>
