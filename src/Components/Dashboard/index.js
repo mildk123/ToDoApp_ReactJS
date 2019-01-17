@@ -1,4 +1,4 @@
-import React, { Component,forwardRef, useRef, useImperativeMethods } from 'react';
+import React, { Component } from 'react';
 import TodoInput from '../../Helper/TodoInput'
 import GetTodos from '../../Helper/GetTodos'
 
@@ -7,28 +7,14 @@ import swal from 'sweetalert'
 
 import { connect } from 'react-redux';
 
-import firebase from '../../Config/firebase'
-const database = firebase.database().ref()
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {};
         this.todoGet = React.createRef();
-
-        
     }
 
-    componentWillMount() {
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                this.props.history.push('./')
-            } else {
-                // No user is signed in.
-                this.props.history.push('./Authentication')
-            }
-        });
-    }
 
     addTask = () => {
         if (this.state.TaskName != null) {

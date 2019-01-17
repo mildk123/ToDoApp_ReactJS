@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import Paper from '../Paper'
 
-import firebase from '../../Config/firebase'
-const database = firebase.database().ref()
 
 class GetTodos extends Component {
     constructor(props) {
@@ -16,7 +14,7 @@ class GetTodos extends Component {
 
 
     componentDidMount() {
-      this.getTodos()
+        this.getTodos()
     }
 
     getTodos() {
@@ -34,19 +32,25 @@ class GetTodos extends Component {
     }
 
     remove = (key, arrayKey) => {
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                database.child('tasks').child(user.uid).child(key).remove()
+        fetch('/todos/delete', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title: key })
+        })
+            .then(Response => {
+                // console.log('resp', Response);
+
                 let array = this.state.todosList
                 array.splice(arrayKey, 1)
                 this.setState({
                     todosList: array
                 })
-            } else {
-                // No user is signed in.
-                this.props.history.push('./Authentication')
-            }
-        });
+            })
+            .catch(error => console.log(error.message)
+            )
+
     }
 
     render() {
@@ -55,10 +59,10 @@ class GetTodos extends Component {
             return (
                 <Fragment >
                     {todosList.map((item, index) => {
-                        return <Paper key={item.title} style={{ padding: 10, float: 'left', width: 340, height: 120, marginRight: 8 }}>
+                        return <Paper key={item._id} style={{ padding: 10, float: 'left', width: 340, height: 120, marginRight: 8 }}>
                             <h3 style={{ float: 'left' }}>{item.title}</h3>
                             <button
-                                onClick={(key, arrayKey) => this.remove(item.key, index)}
+                                onClick={(key, arrayKey) => this.remove(item.title, index)}
                                 style={{
                                     float: 'right',
                                     marginRight: 5,
