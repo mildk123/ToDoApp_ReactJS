@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,forwardRef, useRef, useImperativeMethods } from 'react';
 import TodoInput from '../../Helper/TodoInput'
 import GetTodos from '../../Helper/GetTodos'
 
@@ -13,9 +13,10 @@ const database = firebase.database().ref()
 class Dashboard extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = {};
+        this.todoGet = React.createRef();
 
-        };
+        
     }
 
     componentWillMount() {
@@ -40,8 +41,12 @@ class Dashboard extends Component {
                 },
                 body: JSON.stringify({ title: TaskName, desc: desc })
             })
-                .catch(error => console.log(error.message)
-                )
+               .catch(error => console.log(error.message)
+               )
+
+               this.todoGet.current.getTodos();
+
+
         } else {
             swal('Please fill the above boxes.')
         }
@@ -67,7 +72,7 @@ class Dashboard extends Component {
                         />
                     </div>
                     <div style={{ width: '85%', marginLeft: '10%', marginTop: '3%', }}>
-                        <GetTodos />
+                        <GetTodos ref={this.todoGet} />
                     </div>
                 </main>
             </div >
