@@ -23,7 +23,7 @@ class Dashboard extends Component {
             fetch('/todos/add', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'text/json'
                 },
                 body: JSON.stringify({ title: TaskName, desc: desc })
             })
