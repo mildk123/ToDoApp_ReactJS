@@ -19,7 +19,7 @@ function ContainedButtons(props) {
       style={{width: props.btnWidth, margin: props.btnMargin}} 
       variant={props.variant} 
       color={props.btnColor}>
-        {/* {props.children} */}
+        {props.children}
       </Button>
   );
 }
